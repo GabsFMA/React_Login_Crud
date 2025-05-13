@@ -10,9 +10,18 @@ function RegisterPage() {
 
   return (
     <div className="bg-[#1E1A1A] w-screen h-screen flex flex-col items-center justify-center gap-y-12">
+      <div className='w-full flex flex-row items-center justify-center gap-4'>
+        <a
+          className="absolute top-4 left-4 text-white text-sm hover:underline cursor-pointer"
+          onClick={() => navigate(-1)}
+        >
+          Voltar para o login
+        </a>
         <div className="w-80 flex items-center justify-center">
-            <img src="/logo.png" alt="logo" />
+          <img src="/logo.png" alt="logo" />
         </div>
+      </div>
+
         <div className="flex flex-col">
             <form className="flex flex-col items-center justify-center gap-10">
               <div className="flex flex-col items-center justify-center gap-4">

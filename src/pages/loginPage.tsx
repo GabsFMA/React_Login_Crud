@@ -17,14 +17,14 @@ function loginPage() {
               <div className="flex flex-col items-center justify-center gap-4">
                 <input
                   type="text"
-                  className="bg-[#373232] w-80 h-12 rounded-md text-center text-white"
+                  className="bg-[#373232] w-80 h-12 rounded-md text-center text-white hover:cursor-pointer"
                   placeholder={emailPlaceholder}
                   onFocus={() => setEmailPlaceholder("")}
                   onBlur={(e) => setEmailPlaceholder(e.target.value ? "" : "E-mail")}
                 />
                 <input
                   type="password"
-                  className="bg-[#373232] w-80 h-12 rounded-md text-center text-white"
+                  className="bg-[#373232] w-80 h-12 rounded-md text-center text-white hover:cursor-pointer"
                   placeholder={passwordPlaceholder}
                   onFocus={() => setPasswordPlaceholder("")}
                   onBlur={(e) => setPasswordPlaceholder(e.target.value ? "" : "Senha")}
@@ -39,9 +39,8 @@ function loginPage() {
                 </a>
               </div>
               <div className="flex flex-col items-center gap-4 mt-4">
-                <a 
-                  href="#" 
-                  className="text-white text-sm hover:underline"
+                <a
+                  className="text-white text-sm hover:underline cursor-pointer"
                   onClick={() => navigate("/registerPage")}
                   >
                   Cadastre-se aqui!
