@@ -1,7 +1,7 @@
 function loginPage() {
   return (
-    <div className="bg-[#1E1A1A] w-screen h-screen flex flex-col items-center justify-center">
-        <div className="w-80 h-80 flex items-center justify-center">
+    <div className="bg-[#1E1A1A] w-screen h-screen flex flex-col items-center justify-center gap-y-12">
+        <div className="w-80 flex items-center justify-center">
             <img src="/logo.png" alt="logo" />
         </div>
         <div className="flex flex-col">
@@ -25,7 +25,9 @@ function loginPage() {
               </div>
             </form>
         </div>
-        <div></div>
+        <div>
+          
+        </div>
     </div>
   );
 }
