@@ -1,21 +1,34 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
-function introductionPage() {
+function IntroductionPage() {
+  const navigate = useNavigate();
+  const [isLeaving, setIsLeaving] = useState(false);
 
-    const navigate = useNavigate();
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLeaving(true);
+    }, 2000);
 
-    useEffect(() => {
-        const timer = setTimeout(() => {
-        navigate("/loginPage");
-        }, 2000);
+    return () => clearTimeout(timer);
+  }, []);
 
-        return () => clearTimeout(timer);
-    }, [navigate]);
-    
+  const handleAnimationComplete = () => {
+    if (isLeaving) {
+      navigate("/loginPage");
+    }
+  };
+
   return (
-    <div 
-      className="relative w-screen h-screen overflow-hidden">
+    <motion.div
+      className="relative w-screen h-screen overflow-hidden"
+      initial={{ opacity: 0 }}
+      exit={{ opacity: 0 }}
+      animate={isLeaving ? { opacity: 0 } : { opacity: 1 }}
+      transition={{ duration: 1 }}
+      onAnimationComplete={handleAnimationComplete}
+    >
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat brightness-50"
         style={{ backgroundImage: "url('/background.jpg')" }}
@@ -27,8 +40,8 @@ function introductionPage() {
           className="w-4/5 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg"
         />
       </div>
-    </div>
+    </motion.div>
   );
 }
 
-export default introductionPage;
+export default IntroductionPage;
