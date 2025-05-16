@@ -18,8 +18,8 @@ function LoginPage() {
 
     try {
       const response = await loginUser({ email, password });
-      localStorage.setItem('token', response.token); // salva token
-      navigate('/home'); // redireciona após login (ajuste o destino)
+      localStorage.setItem('token', response.token); 
+      console.log('Login successful:', response); 
     } catch (err: any) {
       setError(err.message || 'Erro ao fazer login.');
     }

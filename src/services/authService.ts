@@ -15,7 +15,7 @@ interface LoginPayload {
 export const registerUser = async (payload: RegisterPayload) => {
   try {
     const response = await axios.post(`${BACK_END_API_URL}register`, payload);
-    return response.data; // Retorna o usuário criado (sem senha)
+    return response.data; 
   } catch (error: any) {
     throw new Error(error.response?.data?.message || 'Registration failed');
   }
@@ -24,7 +24,7 @@ export const registerUser = async (payload: RegisterPayload) => {
 export const loginUser = async (payload: LoginPayload) => {
   try {
     const response = await axios.post(`${BACK_END_API_URL}login`, payload);
-    return response.data; // Retorna { token, user }
+    return response.data; 
   } catch (error: any) {
     throw new Error(error.response?.data?.message || 'Login failed');
   }
