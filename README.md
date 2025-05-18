@@ -103,4 +103,12 @@ export const BACK_END_API_TASKS_URL = 'https://backend-express-mongodb-one.verce
 
 ---
 
+## 📽️ Demonstração em Vídeo
+
+Assista à demonstração da aplicação funcionando localmente e em produção:
+
+🔗 [Clique aqui para assistir ao vídeo](https://youtu.be/eOhYPwFWfDE)
+
+---
+
 ## 👨‍💻 Desenvolvido para fins educacionais e práticos com foco em autenticação e consumo de APIs REST.
