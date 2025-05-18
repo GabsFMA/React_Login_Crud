@@ -1,54 +1,106 @@
-# React + TypeScript + Vite
+# 🧩 Perpetual Tasks – Frontend (React + TypeScript + Tailwind)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este projeto é o **frontend** do sistema Perpetual Tasks, uma aplicação de gerenciamento de tarefas com autenticação JWT. Ele foi desenvolvido com **React + TypeScript** e utiliza **TailwindCSS** para o estilo.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Funcionalidades
 
-## Expanding the ESLint configuration
+- Registro de novos usuários
+- Login com autenticação JWT
+- Redirecionamento para área logada após login
+- Listagem de tarefas protegida por token
+- Criação de nova tarefa com título e descrição
+- Visualização de detalhes da tarefa
+- Marcar tarefa como concluída (efeito de risco)
+- Atualização de tarefa na tela de detalhes
+- Exclusão de tarefa
+- Logout com limpeza de token
+- Estilo moderno, responsivo e adaptado via TailwindCSS
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## 🗂️ Estrutura de Pastas
+
+```
+src/
+├── assets/                  # Imagens e arquivos públicos
+├── components/              # Componentes reutilizáveis
+│   ├── addTask.tsx
+│   ├── protectedRoute.tsx
+│   └── taskList.tsx
+├── pages/                   # Páginas de navegação
+│   ├── introductionPage.tsx
+│   ├── loginPage.tsx
+│   ├── registerPage.tsx
+│   ├── taskPage.tsx
+│   └── userPage.tsx
+├── services/
+│   └── authService.ts       # Funções de autenticação (login, registro)
+├── App.tsx                  # Definição de rotas e layout principal
+├── config.ts                # Constantes de URLs da API
+├── index.css                # Estilo base do Tailwind
+└── main.tsx                 # Entrada principal do app
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 🔐 Integração com Backend
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+A comunicação com o backend é feita por meio de requisições `fetch` autenticadas com **JWT** (armazenado no `localStorage`). O token é enviado no header `Authorization` para rotas protegidas como `/tasks`, `/tasks/:id`.
+
+O backend está disponível em:  
+`https://backend-express-mongodb-one.vercel.app/`
+
+---
+
+## 🧪 Fluxo do Usuário
+
+1. O usuário acessa a tela de **login** ou **registro**
+2. Após login, é redirecionado para a **área logada** (`userPage.tsx`)
+3. Pode criar, marcar como concluída, visualizar detalhes e deletar tarefas
+4. Na tela de detalhes (`taskPage.tsx`), pode **editar** a tarefa
+5. O botão “Sair” remove o token e redireciona para login
+
+---
+
+## 🎨 Estilo
+
+Todo o layout foi feito com **TailwindCSS**, inspirado no estilo escuro da tela de login:
+
+- Fundo escuro `#1E1A1A`
+- Botões com transições e cores vibrantes
+- Componentes centralizados e responsivos
+
+---
+
+## 📦 Instalação
+
+```bash
+npm install
+npm run dev
 ```
+
+> Certifique-se de que o backend está rodando corretamente com a URL de API configurada no `src/config.ts`.
+
+---
+
+## 📌 Observações
+
+- O token é persistido em `localStorage` e validado em todas as operações protegidas
+- A tela de tarefas está desacoplada em componentes para reutilização
+- O projeto pode ser facilmente adaptado para outras APIs REST
+
+---
+
+## 📁 Arquivo de Configuração
+
+```ts
+// src/config.ts
+export const BACK_END_API_URL = 'https://backend-express-mongodb-one.vercel.app/users/';
+export const BACK_END_API_TASKS_URL = 'https://backend-express-mongodb-one.vercel.app/tasks/';
+```
+
+---
+
+## 👨‍💻 Desenvolvido para fins educacionais e práticos com foco em autenticação e consumo de APIs REST.
