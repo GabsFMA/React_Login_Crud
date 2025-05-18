@@ -23,10 +23,12 @@ function UserPage() {
   const [taskList, setTaskList] = useState<Task[]>(
     JSON.parse(localStorage.getItem("tasklist") || "[]")
   );
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchTasks = async () => {
       try {
+        setError(null); // Limpa erro anterior
         const token = localStorage.getItem("token");
         const response = await fetch(BACK_END_API_TASKS_URL, {
           headers: {
@@ -41,6 +43,7 @@ function UserPage() {
         const data = await response.json();
         setTaskList(data);
       } catch (error) {
+        setError("Erro ao buscar tarefas.");
         console.error("Erro ao buscar tarefas:", error);
       }
     };
@@ -53,6 +56,7 @@ function UserPage() {
     if (!taskToUpdate) return;
 
     try {
+      setError(null);
       const token = localStorage.getItem("token");
 
       const response = await fetch(`${BACK_END_API_TASKS_URL}${taskId}`, {
@@ -80,12 +84,14 @@ function UserPage() {
       );
       setTaskList(updatedTasks);
     } catch (error) {
+      setError("Erro ao atualizar tarefa.");
       console.error("Erro ao atualizar tarefa:", error);
     }
   };
 
   const onClickDeleteTask = async (taskId: string) => {
     try {
+      setError(null);
       const token = localStorage.getItem("token");
 
       const response = await fetch(`${BACK_END_API_TASKS_URL}${taskId}`, {
@@ -101,12 +107,14 @@ function UserPage() {
 
       setTaskList(taskList.filter((task) => task._id !== taskId));
     } catch (error) {
+      setError("Erro ao deletar tarefa.");
       console.error("Erro ao deletar tarefa:", error);
     }
   };
 
   const onClickSubmitButton = async (title: string, description: string) => {
     try {
+      setError(null);
       const token = localStorage.getItem("token");
 
       const response = await fetch(BACK_END_API_TASKS_URL, {
@@ -125,6 +133,7 @@ function UserPage() {
       const newTask = await response.json();
       setTaskList([...taskList, newTask]);
     } catch (error) {
+      setError("Erro ao criar tarefa.");
       console.error("Erro ao criar tarefa:", error);
     }
   };
@@ -141,31 +150,37 @@ function UserPage() {
     isCompleted: task.isCompleted,
   }));
 
-return (
-  <div className="w-screen h-screen bg-[#1E1A1A] flex justify-center items-center">
-    <div className="w-full max-w-md bg-[#2A2424] p-6 rounded-2xl shadow-lg space-y-4">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl text-white font-bold">Perpetual Tarefas</h1>
-        <button
-          onClick={onLogoutClick}
-          className="bg-red-600 text-white px-3 py-1 rounded-md hover:bg-red-700"
-        >
-          Sair
-        </button>
-      </div>
+  return (
+    <div className="w-screen h-screen bg-[#1E1A1A] flex justify-center items-center">
+      <div className="w-full max-w-md bg-[#2A2424] p-6 rounded-2xl shadow-lg space-y-4">
+        <div className="flex justify-between items-center">
+          <h1 className="text-3xl text-white font-bold">Perpetual Tarefas</h1>
+          <button
+            onClick={onLogoutClick}
+            className="bg-red-600 text-white px-3 py-1 rounded-md hover:bg-red-700"
+          >
+            Sair
+          </button>
+        </div>
 
-      <AddTask onClickSubmitButton={onClickSubmitButton} />
+        {error && (
+          <div className="bg-red-500 text-white px-4 py-2 rounded mb-2 text-center">
+            {error}
+          </div>
+        )}
 
-      <div className="max-h-[400px] overflow-y-auto">
-        <TaskList
-          taskList={formattedTasks}
-          onTaskClick={onTaskClick}
-          onClickDeleteTask={onClickDeleteTask}
-        />
+        <AddTask onClickSubmitButton={onClickSubmitButton} />
+
+        <div className="max-h-[400px] overflow-y-auto">
+          <TaskList
+            taskList={formattedTasks}
+            onTaskClick={onTaskClick}
+            onClickDeleteTask={onClickDeleteTask}
+          />
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
 }
 
 export default UserPage;

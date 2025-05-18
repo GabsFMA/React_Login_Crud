@@ -16,13 +16,26 @@ function LoginPage() {
     e.preventDefault();
     setError('');
 
+    // Validação de campos vazios
+    if (!email || !password) {
+      setError('Preencha todos os campos.');
+      return;
+    }
+
     try {
       const response = await loginUser({ email, password });
       localStorage.setItem('token', response.token); 
       console.log('Login successful:', response);
       navigate('/dashboard'); 
     } catch (err: any) {
-      setError(err.message || 'Erro ao fazer login.');
+      // Sinalização de erro conforme resposta da API
+      if (err.response && err.response.status === 404) {
+        setError('E-mail não cadastrado.');
+      } else if (err.response && err.response.status === 401) {
+        setError('Senha incorreta.');
+      } else {
+        setError(err.message || 'Erro ao fazer login.');
+      }
     }
   };
 
@@ -36,7 +49,7 @@ function LoginPage() {
           <div className="flex flex-col items-center justify-center gap-4">
             <input
               type="email"
-              className="bg-[#373232] w-80 h-12 rounded-md text-center text-white hover:cursor-pointer"
+              className={`bg-[#373232] w-80 h-12 rounded-md text-center text-white hover:cursor-pointer ${error && !email ? 'border-2 border-red-500' : ''}`}
               placeholder={emailPlaceholder}
               onFocus={() => setEmailPlaceholder("")}
               onBlur={(e) => setEmailPlaceholder(e.target.value ? "" : "E-mail")}
@@ -46,7 +59,7 @@ function LoginPage() {
             />
             <input
               type="password"
-              className="bg-[#373232] w-80 h-12 rounded-md text-center text-white hover:cursor-pointer"
+              className={`bg-[#373232] w-80 h-12 rounded-md text-center text-white hover:cursor-pointer ${error && !password ? 'border-2 border-red-500' : ''}`}
               placeholder={passwordPlaceholder}
               onFocus={() => setPasswordPlaceholder("")}
               onBlur={(e) => setPasswordPlaceholder(e.target.value ? "" : "Senha")}
