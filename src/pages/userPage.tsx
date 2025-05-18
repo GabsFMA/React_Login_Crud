@@ -1,0 +1,157 @@
+import TaskList from "../components/taskList";
+import AddTask from "../components/addTask";
+import { BACK_END_API_TASKS_URL } from "../config";
+import { useEffect, useState } from "react";
+
+export interface Task {
+  _id: string;
+  title: string;
+  description: string;
+  isCompleted: boolean;
+}
+
+interface AdaptedTask {
+  id: string;
+  title: string;
+  description: string;
+  isCompleted: boolean;
+}
+
+function UserPage() {
+  const [taskList, setTaskList] = useState<Task[]>(
+    JSON.parse(localStorage.getItem("tasklist") || "[]")
+  );
+
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await fetch(BACK_END_API_TASKS_URL, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Erro ao buscar tarefas");
+        }
+
+        const data = await response.json();
+        setTaskList(data);
+      } catch (error) {
+        console.error("Erro ao buscar tarefas:", error);
+      }
+    };
+
+    fetchTasks();
+  }, []);
+
+const onTaskClick = async (taskId: string) => {
+  const taskToUpdate = taskList.find((t) => t._id === taskId);
+  if (!taskToUpdate) return;
+
+  try {
+    const token = localStorage.getItem("token");
+
+    const response = await fetch(`${BACK_END_API_TASKS_URL}${taskId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ completed: !taskToUpdate.isCompleted }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Erro ao atualizar tarefa");
+    }
+
+    const updatedTask = await response.json();
+
+    const updatedTasks = taskList.map((t) =>
+      t._id === taskId
+        ? {
+            ...updatedTask,
+            isCompleted: updatedTask.completed, // <- mapeia para o campo correto
+          }
+        : t
+    );
+    setTaskList(updatedTasks);
+  } catch (error) {
+    console.error("Erro ao atualizar tarefa:", error);
+  }
+};
+
+
+  const onClickDeleteTask = async (taskId: string) => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await fetch(`${BACK_END_API_TASKS_URL}${taskId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Erro ao deletar tarefa");
+      }
+
+      setTaskList(taskList.filter((task) => task._id !== taskId));
+    } catch (error) {
+      console.error("Erro ao deletar tarefa:", error);
+    }
+  };
+
+  const onClickSubmitButton = async (title: string, description: string) => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await fetch(BACK_END_API_TASKS_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ title, description }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Erro ao criar tarefa");
+      }
+
+      const newTask = await response.json();
+      setTaskList([...taskList, newTask]);
+    } catch (error) {
+      console.error("Erro ao criar tarefa:", error);
+    }
+  };
+
+  
+  const formattedTasks: AdaptedTask[] = taskList.map((task) => ({
+    id: task._id,
+    title: task.title,
+    description: task.description,
+    isCompleted: task.isCompleted,
+  }));
+
+  return (
+    <div className="w-screen h-screen bg-slate-500 flex justify-center p-6">
+      <div className="w-[500px] space-y-4">
+        <h1 className="text-3xl text-slate-100 font-bold text-center">
+          Perpetual Tarefas
+        </h1>
+
+        <AddTask onClickSubmitButton={onClickSubmitButton} />
+        <TaskList
+          taskList={formattedTasks}
+          onTaskClick={onTaskClick}
+          onClickDeleteTask={onClickDeleteTask}
+        />
+      </div>
+    </div>
+  );
+}
+
+export default UserPage;

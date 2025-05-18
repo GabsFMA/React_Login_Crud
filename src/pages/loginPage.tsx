@@ -19,7 +19,8 @@ function LoginPage() {
     try {
       const response = await loginUser({ email, password });
       localStorage.setItem('token', response.token); 
-      console.log('Login successful:', response); 
+      console.log('Login successful:', response);
+      navigate('/dashboard'); 
     } catch (err: any) {
       setError(err.message || 'Erro ao fazer login.');
     }
@@ -68,7 +69,7 @@ function LoginPage() {
           <div className="flex flex-col items-center gap-4 mt-4">
             <a
               className="text-white text-sm hover:underline cursor-pointer"
-              onClick={() => navigate("/registerPage")}
+              onClick={() => navigate("/register")}
             >
               Cadastre-se aqui!
             </a>
