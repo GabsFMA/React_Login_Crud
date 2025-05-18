@@ -2,6 +2,7 @@ import TaskList from "../components/taskList";
 import AddTask from "../components/addTask";
 import { BACK_END_API_TASKS_URL } from "../config";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom"; // ⬅️ IMPORTANTE
 
 export interface Task {
   _id: string;
@@ -18,6 +19,7 @@ interface AdaptedTask {
 }
 
 function UserPage() {
+  const navigate = useNavigate(); 
   const [taskList, setTaskList] = useState<Task[]>(
     JSON.parse(localStorage.getItem("tasklist") || "[]")
   );
@@ -46,42 +48,41 @@ function UserPage() {
     fetchTasks();
   }, []);
 
-const onTaskClick = async (taskId: string) => {
-  const taskToUpdate = taskList.find((t) => t._id === taskId);
-  if (!taskToUpdate) return;
+  const onTaskClick = async (taskId: string) => {
+    const taskToUpdate = taskList.find((t) => t._id === taskId);
+    if (!taskToUpdate) return;
 
-  try {
-    const token = localStorage.getItem("token");
+    try {
+      const token = localStorage.getItem("token");
 
-    const response = await fetch(`${BACK_END_API_TASKS_URL}${taskId}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ completed: !taskToUpdate.isCompleted }),
-    });
+      const response = await fetch(`${BACK_END_API_TASKS_URL}${taskId}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ completed: !taskToUpdate.isCompleted }),
+      });
 
-    if (!response.ok) {
-      throw new Error("Erro ao atualizar tarefa");
+      if (!response.ok) {
+        throw new Error("Erro ao atualizar tarefa");
+      }
+
+      const updatedTask = await response.json();
+
+      const updatedTasks = taskList.map((t) =>
+        t._id === taskId
+          ? {
+              ...updatedTask,
+              isCompleted: updatedTask.completed,
+            }
+          : t
+      );
+      setTaskList(updatedTasks);
+    } catch (error) {
+      console.error("Erro ao atualizar tarefa:", error);
     }
-
-    const updatedTask = await response.json();
-
-    const updatedTasks = taskList.map((t) =>
-      t._id === taskId
-        ? {
-            ...updatedTask,
-            isCompleted: updatedTask.completed, // <- mapeia para o campo correto
-          }
-        : t
-    );
-    setTaskList(updatedTasks);
-  } catch (error) {
-    console.error("Erro ao atualizar tarefa:", error);
-  }
-};
-
+  };
 
   const onClickDeleteTask = async (taskId: string) => {
     try {
@@ -128,7 +129,11 @@ const onTaskClick = async (taskId: string) => {
     }
   };
 
-  
+  const onLogoutClick = () => {
+    localStorage.removeItem("token");
+    navigate("/"); 
+  };
+
   const formattedTasks: AdaptedTask[] = taskList.map((task) => ({
     id: task._id,
     title: task.title,
@@ -139,9 +144,15 @@ const onTaskClick = async (taskId: string) => {
   return (
     <div className="w-screen h-screen bg-slate-500 flex justify-center p-6">
       <div className="w-[500px] space-y-4">
-        <h1 className="text-3xl text-slate-100 font-bold text-center">
-          Perpetual Tarefas
-        </h1>
+        <div className="flex justify-between items-center">
+          <h1 className="text-3xl text-slate-100 font-bold">Perpetual Tarefas</h1>
+          <button
+            onClick={onLogoutClick}
+            className="bg-red-600 text-white px-3 py-1 rounded-md hover:bg-red-700"
+          >
+            Sair
+          </button>
+        </div>
 
         <AddTask onClickSubmitButton={onClickSubmitButton} />
         <TaskList
