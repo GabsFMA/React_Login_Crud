@@ -58,7 +58,7 @@ O backend está disponível em:
 
 Confira o front-end e o back-end hospedados no vercel:
 
-🔗 [Front-end](https://react-login-crud.vercel.app/login)
+🔗 [Front-end](https://react-login-crud.vercel.app/)
 
 🔗 [Back-end](https://backend-express-mongodb-one.vercel.app)
 
