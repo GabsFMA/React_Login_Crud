@@ -54,6 +54,18 @@ O backend está disponível em:
 
 ---
 
+## Hospedagens
+
+Confira o front-end e o back-end hospedados no vercel:
+
+🔗 [Front-end](https://react-login-crud.vercel.app/login)
+
+🔗 [Back-end](https://backend-express-mongodb-one.vercel.app)
+
+🔗 [Back-end (Repositório)](https://github.com/GabsFMA/backend-express-mongodb)
+
+---
+
 ## 🧪 Fluxo do Usuário
 
 1. O usuário acessa a tela de **login** ou **registro**
