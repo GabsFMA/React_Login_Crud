@@ -21,21 +21,30 @@ function TaskList({ taskList, onTaskClick, onClickDeleteTask }: TaskListProps) {
   }
 
   return (
-    <ul className="space-y-4 p-6 bg-slate-200 rounded-md shadow">
+    <ul className="space-y-3 bg-[#3A2F2F] p-4 rounded-2xl shadow-md">
       {taskList.map((task) => (
-        <li key={task.id} className="flex gap-2 items-center">
+        <li
+          key={task.id}
+          className="flex gap-2 items-center text-white bg-[#1E1A1A] rounded-lg p-2"
+        >
           <button
             onClick={() => onTaskClick(task.id)}
-            className="w-full bg-slate-400 text-white p-2 rounded-md text-left"
+            className="flex-1 text-left px-3 py-2 rounded-md hover:bg-[#2D2525] transition-colors"
           >
-            <span className={task.isCompleted ? "line-through" : ""}>
+            <span
+              className={`${
+                task.isCompleted
+                  ? "line-through text-slate-400"
+                  : "text-white"
+              }`}
+            >
               {task.title}
             </span>
           </button>
 
           <button
             onClick={() => onSeeDetailsClick(task)}
-            className="bg-slate-400 p-2 text-white rounded-md"
+            className="bg-blue-600 hover:bg-blue-700 p-2 rounded-md transition-colors"
             title="Ver detalhes"
           >
             ➡️
@@ -43,7 +52,7 @@ function TaskList({ taskList, onTaskClick, onClickDeleteTask }: TaskListProps) {
 
           <button
             onClick={() => onClickDeleteTask(task.id)}
-            className="bg-slate-400 p-2 text-white rounded-md"
+            className="bg-red-600 hover:bg-red-700 p-2 rounded-md transition-colors"
             title="Excluir tarefa"
           >
             🗑

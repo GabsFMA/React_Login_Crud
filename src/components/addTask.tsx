@@ -9,23 +9,23 @@ function AddTask({ onClickSubmitButton }: AddTaskProps) {
   const [description, setDescription] = useState("");
 
   return (
-    <div className="p-6 bg-slate-200 rounded-md shadow space-y-4">
+    <div className="bg-[#3A2F2F] p-4 rounded-2xl shadow-md space-y-4">
       <input
-        className="px-4 py-2 rounded-md border border-slate-300 outline-slate-400 w-full"
+        className="bg-[#1E1A1A] text-white placeholder-slate-400 px-4 py-2 rounded-md border border-[#444] focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
         type="text"
-        placeholder="Insira o título da tarefa"
+        placeholder="Título da tarefa"
         value={title}
         onChange={(event) => setTitle(event.target.value)}
       />
       <input
-        className="px-4 py-2 rounded-md border border-slate-300 outline-slate-400 w-full"
+        className="bg-[#1E1A1A] text-white placeholder-slate-400 px-4 py-2 rounded-md border border-[#444] focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
         type="text"
-        placeholder="Insira a descrição da tarefa"
+        placeholder="Descrição da tarefa"
         value={description}
         onChange={(event) => setDescription(event.target.value)}
       />
       <button
-        className="bg-blue-500 text-white px-4 py-2 rounded-md"
+        className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-md w-full transition-colors"
         onClick={() => {
           if (!title.trim() || !description.trim()) {
             return alert("Preencha os espaços em branco!");

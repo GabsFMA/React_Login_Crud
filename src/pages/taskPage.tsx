@@ -80,7 +80,7 @@ function TaskPage() {
   }
 
   return (
-    <div className="w-screen h-screen bg-slate-500 p-6 flex justify-center">
+    <div className="w-screen h-screen bg-[#1E1A1A] p-6 flex justify-center">
       <div className="w-[500px] space-y-4">
         <div className="flex justify-center relative m-6">
           <button

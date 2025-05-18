@@ -2,7 +2,7 @@ import TaskList from "../components/taskList";
 import AddTask from "../components/addTask";
 import { BACK_END_API_TASKS_URL } from "../config";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom"; // ⬅️ IMPORTANTE
+import { useNavigate } from "react-router-dom"; 
 
 export interface Task {
   _id: string;
@@ -141,20 +141,22 @@ function UserPage() {
     isCompleted: task.isCompleted,
   }));
 
-  return (
-    <div className="w-screen h-screen bg-slate-500 flex justify-center p-6">
-      <div className="w-[500px] space-y-4">
-        <div className="flex justify-between items-center">
-          <h1 className="text-3xl text-slate-100 font-bold">Perpetual Tarefas</h1>
-          <button
-            onClick={onLogoutClick}
-            className="bg-red-600 text-white px-3 py-1 rounded-md hover:bg-red-700"
-          >
-            Sair
-          </button>
-        </div>
+return (
+  <div className="w-screen h-screen bg-[#1E1A1A] flex justify-center items-center">
+    <div className="w-full max-w-md bg-[#2A2424] p-6 rounded-2xl shadow-lg space-y-4">
+      <div className="flex justify-between items-center">
+        <h1 className="text-3xl text-white font-bold">Perpetual Tarefas</h1>
+        <button
+          onClick={onLogoutClick}
+          className="bg-red-600 text-white px-3 py-1 rounded-md hover:bg-red-700"
+        >
+          Sair
+        </button>
+      </div>
 
-        <AddTask onClickSubmitButton={onClickSubmitButton} />
+      <AddTask onClickSubmitButton={onClickSubmitButton} />
+
+      <div className="max-h-[400px] overflow-y-auto">
         <TaskList
           taskList={formattedTasks}
           onTaskClick={onTaskClick}
@@ -162,7 +164,8 @@ function UserPage() {
         />
       </div>
     </div>
-  );
+  </div>
+);
 }
 
 export default UserPage;
